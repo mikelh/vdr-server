@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS vdrserver-build
+FROM ubuntu:18.04 AS vdr-server
 MAINTAINER Connie                     
 
 ENV DEBIAN_FRONTEND noninteractive
