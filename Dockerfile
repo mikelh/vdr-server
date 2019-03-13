@@ -6,8 +6,8 @@ ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ENV _apt_clean="eval apt-get clean && $_clean"
 
 # fix locale.
-RUN apt-get update && apt-get install -y locales tzdata && rm -rf /var/lib/apt/lists/* \
-    && localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-
+#RUN apt-get update && apt-get install -y locales tzdata && rm -rf /var/lib/apt/lists/* \
+#    && localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-
 
 # Set your local timezone
 RUN echo "Europe/Berlin" > /etc/timezone && \
@@ -121,7 +121,7 @@ COPY templates/Make.* /build/vdr-${VDR_VERSION}/
 RUN	make && make install
 
 #copy templates for live plugin to destination folder
-RUN cp -a PLUGINS/src/live/live /usr/share/vdr/plugins
+RUN cp -a /build/vdr-${VDR_VERSION}/PLUGINS/src/live/live /usr/share/vdr/plugins
 
 #RUN	make && make install && \
 #	apt-get purge -qy binutils build-essential bzip2 cpp dpkg-dev fakeroot g++ gcc \
