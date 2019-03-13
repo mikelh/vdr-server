@@ -6,12 +6,18 @@ ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ENV _apt_clean="eval apt-get clean && $_clean"
 
 # fix locale.
-#RUN apt-get update && apt-get install -y locales tzdata && rm -rf /var/lib/apt/lists/* \
+#RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
 #    && localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-
 
 # Set your local timezone
-RUN echo "Europe/Berlin" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+ENV TZ 'Europe/Berlin'
+RUN echo $TZ > /etc/timezone && \
+    apt-get update && apt-get install -y tzdata && \
+    rm /etc/localtime && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean
+    
 
 RUN locale-gen de_DE.UTF-8
 ENV LANG de_DE.UTF-8  
